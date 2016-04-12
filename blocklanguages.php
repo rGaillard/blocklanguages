@@ -47,9 +47,27 @@ class BlockLanguages extends Module implements WidgetInterface
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
     }
 
+    public function install()
+    {
+        return $this->registerHook('displayHeader')
+            && parent::install();
+    }
+
+    public function uninstall()
+    {
+        return $this->unregisterHook('displayHeader')
+            && parent::uninstall();
+    }
+
     public function renderWidget($hookName = null, array $configuration = [])
     {
         $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
+
+        ddd($hookName);
+        if (in_array($hookName, array('displayHeader', 'Header'))) {
+            return $this->display(__FILE__, 'blocklanguages-head.tpl');
+        }
+
         return $this->display(__FILE__, 'blocklanguages.tpl');
     }
 
