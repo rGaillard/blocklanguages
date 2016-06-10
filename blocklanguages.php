@@ -49,6 +49,10 @@ class BlockLanguages extends Module implements WidgetInterface
 
     public function renderWidget($hookName = null, array $configuration = [])
     {
+        if (!Language::isMultiLanguageActivated()) {
+            return;
+        }
+
         $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
         return $this->display(__FILE__, 'blocklanguages.tpl');
     }
